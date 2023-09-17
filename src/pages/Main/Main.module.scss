@@ -1,0 +1,38 @@
+.Main {
+  display: flex;
+  flex-direction: column;
+
+  gap: 3rem;
+
+  align-items: center;
+  justify-content: center;
+
+  height: 100vh;
+}
+
+.Container {
+  display: flex;
+  flex-direction: column;
+
+  gap: 1.5rem;
+}
+
+.Section {
+  display: flex;
+  flex-direction: column;
+
+  gap: 0.5rem;
+}
+
+.DropdownToggle {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  width: 300px !important;
+}
+
+.DropdownItem {
+  display: flex !important;
+  width: 300px !important;
+  justify-content: center !important;
+}
