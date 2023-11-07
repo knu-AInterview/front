@@ -33,7 +33,8 @@ const NavigationBar = ({ isLogin, userName, logout }) => {
                 title="AI 면접"
                 id={`offcanvasNavbarDropdown-expand-${expand}`}
               >
-                <NavDropdown.Item href="/main">AI 면접 연습</NavDropdown.Item>
+                {/* <NavDropdown.Item href="/main">AI 면접 연습</NavDropdown.Item> */}
+                <NavDropdown.Item href="/page1">AI 면접 연습</NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item href="/interview/record/1">
                   면접 기록 보기

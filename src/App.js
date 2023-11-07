@@ -10,6 +10,8 @@ import SignUp from "./pages/Auth/SignUp";
 import NavigationBar from "./components/NavigationBar";
 import Home from "./pages/Home/Home";
 import InterviewRecordList from "./components/InterviewRecordList";
+import Page1 from "./components/Page1";
+import Page2 from "./components/Page2";
 
 const App = () => {
   const [isLogin, setIsLogin] = useState(false);
@@ -56,6 +58,8 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/main" element={<Main />} />
+        <Route path="/page1" element={<Page1 />} />
+        <Route path="/page2" element={<Page2 />} />
         <Route
           path="/login"
           element={
