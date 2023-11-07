@@ -4,6 +4,7 @@ import "./Login.css";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Button, Container, Form } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const Login = ({ setIsLogin, setUser }) => {
   const [email, setEmail] = useState("");
@@ -41,7 +42,7 @@ const Login = ({ setIsLogin, setUser }) => {
 
   return (
     // <div class="rounded shadow p-3 mb-5 position-absolute top-50 start-50 translate-middle">
-    <Container>
+    <Container className="align-middle">
       <h1>로그인</h1>
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
@@ -75,6 +76,7 @@ const Login = ({ setIsLogin, setUser }) => {
             Login
           </Button>
         </div>
+        <Link to="/signup">회원가입</Link>
       </Form>
     </Container>
   );
