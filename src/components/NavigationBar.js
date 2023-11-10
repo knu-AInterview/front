@@ -7,7 +7,8 @@ import {
   Offcanvas,
 } from "react-bootstrap";
 
-const NavigationBar = ({ isLogin, userName, logout }) => {
+// const NavigationBar = ({ isLogin, userName, logout }) => {
+const NavigationBar = () => {
   const expand = false;
   return (
     <Navbar key={expand} expand={expand} className="bg-body-tertiary">
@@ -23,28 +24,24 @@ const NavigationBar = ({ isLogin, userName, logout }) => {
         >
           <Offcanvas.Header closeButton>
             <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
-              {isLogin ? userName : "AInterview"}
+              AInterview
             </Offcanvas.Title>
           </Offcanvas.Header>
           <Offcanvas.Body>
             <Nav className="me-auto">
               <Nav.Link href="/">Home</Nav.Link>
-              <NavDropdown
+              <Nav.Link href="/page1">AI 면접 보기</Nav.Link>
+              <Nav.Link href="/history">면접 히스토리</Nav.Link>
+              {/* <NavDropdown
                 title="AI 면접"
                 id={`offcanvasNavbarDropdown-expand-${expand}`}
               >
-                {/* <NavDropdown.Item href="/main">AI 면접 연습</NavDropdown.Item> */}
                 <NavDropdown.Item href="/page1">AI 면접 연습</NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item href="/interview/record/1">
+                <NavDropdown.Item href="/history">
                   면접 기록 보기
                 </NavDropdown.Item>
-              </NavDropdown>
-              {isLogin ? (
-                <Nav.Link onClick={logout}>로그아웃</Nav.Link>
-              ) : (
-                <Nav.Link href="/login">로그인</Nav.Link>
-              )}
+              </NavDropdown> */}
             </Nav>
           </Offcanvas.Body>
         </Navbar.Offcanvas>

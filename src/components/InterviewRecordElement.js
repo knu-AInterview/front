@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Button, Collapse } from "react-bootstrap";
 
-const InterviewRecordElement = ({ index, job, question, answer, date }) => {
+const InterviewRecordElement = ({ id, job, question, answer, date }) => {
   const [open, setOpen] = useState(false);
 
   return (
     <tr>
-      <td>{index}</td>
+      <td>{id}</td>
       <td>{job}</td>
       <td>
         {question}{" "}
