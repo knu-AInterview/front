@@ -12,6 +12,7 @@ import Home from "./pages/Home/Home";
 import InterviewRecordList from "./components/InterviewRecordList";
 import Page1 from "./components/Page1";
 import Page2 from "./components/Page2";
+import Resume from "./pages/Resume";
 
 const App = () => {
   const [isLogin, setIsLogin] = useState(false);
@@ -19,37 +20,37 @@ const App = () => {
   // 로그인을 위한 modal
   const [show, setShow] = useState(false);
 
-  const logout = () => {
-    axios({
-      url: "http://localhost:8080/logout",
-      method: "POST",
-      withCredentials: true,
-    }).then((result) => {
-      if (result.status === 200) {
-        window.open("/", "_self");
-      }
-    });
-  };
+  // const logout = () => {
+  //   axios({
+  //     url: "http://localhost:8080/logout",
+  //     method: "POST",
+  //     withCredentials: true,
+  //   }).then((result) => {
+  //     if (result.status === 200) {
+  //       window.open("/", "_self");
+  //     }
+  //   });
+  // };
 
   useEffect(() => {
-    try {
-      axios({
-        url: "http://localhost:8080/login/success",
-        method: "GET",
-        withCredentials: true,
-      })
-        .then((result) => {
-          if (result.data) {
-            setIsLogin(true);
-            setUser(result.data);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    } catch (error) {
-      console.log(error);
-    }
+    // try {
+    //   axios({
+    //     url: "http://localhost:8080/login/success",
+    //     method: "GET",
+    //     withCredentials: true,
+    //   })
+    //     .then((result) => {
+    //       if (result.data) {
+    //         setIsLogin(true);
+    //         setUser(result.data);
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
+    // } catch (error) {
+    //   console.log(error);
+    // }
   }, []);
 
   return (
@@ -60,17 +61,18 @@ const App = () => {
         <Route path="/main" element={<Main />} />
         <Route path="/page1" element={<Page1 />} />
         <Route path="/page2" element={<Page2 />} />
-        <Route
+        {/* <Route
           path="/login"
           element={
             <Login setUser={setUser} setIsLogin={setIsLogin} logout={logout} />
           }
-        />
+        /> */}
         <Route
           path="/interview/record/:active"
           element={<InterviewRecordList />}
         />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/resume" element={<Resume />} />
       </Routes>
     </div>
   );
