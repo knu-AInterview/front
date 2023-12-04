@@ -6,6 +6,8 @@ const Resume = () => {
   // mode에 따라 작성, 읽기, 수정
   const [searchParams, setSearchParams] = useSearchParams();
   const mode = searchParams.get("mode");
+  const resumeId = searchParams.get("resumeId");
+  const userId = searchParams.get("userId");
 
   // 희망 직무, 자기 소개
   const [resume, setResume] = useState({
@@ -52,7 +54,15 @@ const Resume = () => {
     setCareer(newCareer);
   };
 
+  // 서버로부터 데이터 받아오기
+  const getResumeData = async () => {
+    const res = await fetch(``);
+  };
+
   const handleSubmit = () => {};
+
+  console.log("resume: ", resume);
+  console.log("career:", career);
 
   return (
     <div>
@@ -134,7 +144,13 @@ const Resume = () => {
         {/* 저장 또는 수정 */}
         <Form.Group as={Row} className="mb-3">
           <Col sm={{ span: 10, offset: 2 }}>
-            <Button type="submit">저장</Button>
+            {mode === "write" || mode === "edit" ? (
+              <Button type="submit">저장</Button>
+            ) : mode === "view" ? (
+              <Button variant="secondary">수정</Button>
+            ) : (
+              <></>
+            )}
           </Col>
         </Form.Group>
       </Form>

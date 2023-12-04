@@ -13,6 +13,8 @@ import InterviewRecordList from "./components/InterviewRecordList";
 import Page1 from "./components/Page1";
 import Page2 from "./components/Page2";
 import Resume from "./pages/Resume";
+import Mypage from "./pages/Mypage";
+import { Container } from "react-bootstrap";
 
 const App = () => {
   const [isLogin, setIsLogin] = useState(false);
@@ -56,24 +58,27 @@ const App = () => {
   return (
     <div className="App">
       <NavigationBar isLogin={isLogin} userName={user.username} />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/main" element={<Main />} />
-        <Route path="/page1" element={<Page1 />} />
-        <Route path="/page2" element={<Page2 />} />
-        {/* <Route
+      <Container>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/main" element={<Main />} />
+          <Route path="/page1" element={<Page1 />} />
+          <Route path="/page2" element={<Page2 />} />
+          {/* <Route
           path="/login"
           element={
             <Login setUser={setUser} setIsLogin={setIsLogin} logout={logout} />
           }
         /> */}
-        <Route
-          path="/interview/record/:active"
-          element={<InterviewRecordList />}
-        />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/resume" element={<Resume />} />
-      </Routes>
+          <Route
+            path="/interview/record/:active"
+            element={<InterviewRecordList />}
+          />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/resume" element={<Resume />} />
+          <Route path="/user/:userId" element={<Mypage />} />
+        </Routes>
+      </Container>
     </div>
   );
 };
