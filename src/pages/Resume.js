@@ -1,127 +1,142 @@
-import React, { useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import { Form, Row, Col, Button, ButtonGroup } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { Form, Row, Col, Button } from "react-bootstrap";
+import ResumeAddableInput from "../components/Resume/ResumeAddableInput";
 
 const Resume = () => {
+  const navigate = useNavigate();
   // mode에 따라 작성, 읽기, 수정
   const [searchParams, setSearchParams] = useSearchParams();
   const mode = searchParams.get("mode");
-  const resumeId = searchParams.get("resumeId");
   const userId = searchParams.get("userId");
+  const resumeId = searchParams.get("resumeId");
 
-  // 희망 직무, 자기 소개
-  const [resume, setResume] = useState({
+  // 추가 및 수정이 없는 항목: 제목, 사용 언어, 자기소개
+  const [notAddableItem, setNotAddableItem] = useState({
     title: new Date().toLocaleString(),
-    desiredJob: "",
-    introduce: "",
+    introduction: "",
+    language: "",
   });
 
-  const handleChangeResume = (e) => {
-    setResume({
-      ...resume,
+  const handleChangeNotAddableItem = (e) => {
+    setNotAddableItem({
+      ...notAddableItem,
       [e.target.name]: e.target.value,
     });
   };
 
-  const defaultCareerElement = {
-    companyName: "",
-    work: "",
-  };
-
-  // 경력 (직장명, 직무)
-  const [career, setCareer] = useState([
-    {
-      companyName: "",
-      work: "",
-    },
-  ]);
-
-  const addCareer = () => {
-    if (career.length < 10) {
-      setCareer(career.concat({ ...defaultCareerElement }));
-    }
-  };
-
-  const deleteCareer = () => {
-    if (career.length > 1) {
-      setCareer(career.slice(0, -1));
-    }
-  };
-
-  const handleChangeCareer = (e, idx) => {
-    const newCareer = [...career];
-    newCareer[idx] = { ...newCareer[idx], [e.target.name]: e.target.value };
-    setCareer(newCareer);
-  };
+  // 추가 및 수정이 있는 항목
+  // 경력
+  const [career, setCareer] = useState([]);
+  const getCareer = (state) => setCareer(state);
+  const [initCareer, setInitCareer] = useState([]);
+  // 수상 이력
+  const [award, setAward] = useState([]);
+  const getAward = (state) => setAward(state);
+  const [initAward, setInitAward] = useState([]);
 
   // 서버로부터 데이터 받아오기
   const getResumeData = async () => {
-    const res = await fetch(``);
+    const res = await fetch("/data/resume.json", {
+      method: "GET",
+      // body: JSON.stringify({ mode: mode }),
+    })
+      .then((res) => res.json())
+      .catch((err) => {
+        // return dummyResumeData;
+        alert("이력서 가져오기 실패");
+      });
+
+    setNotAddableItem({
+      title: res.title,
+      language: res.language,
+      introduction: res.introduction,
+    });
+    setCareer(res.career);
+    setAward(res.award);
+    setInitCareer(res.career);
+    setInitAward(res.award);
   };
 
-  const handleSubmit = () => {};
+  // 수정 버튼 클릭
+  const onClickEdit = () => {
+    setSearchParams({ userId: userId, resumeId: resumeId, mode: "edit" });
+  };
 
-  console.log("resume: ", resume);
-  console.log("career:", career);
+  // 저장 버튼 클릭
+  const handleSubmit = () => {
+    const resumeData = {
+      ...notAddableItem,
+      career: career,
+      award: award,
+      resumeId: resumeId, // resume id (null if wrtie mode)
+    };
+
+    fetch("/api/resume", {
+      method: "POST", // 작성 -> write ,수정 -> put
+      body: JSON.stringify(resumeData),
+    }).then((res) => {
+      if (res.status === 200) {
+        alert("저장 완료");
+        navigate("/");
+      } else {
+        alert("저장 실패");
+      }
+    });
+  };
+
+  useEffect(() => {
+    (mode === "view" || mode === "edit") && getResumeData();
+  }, []);
 
   return (
-    <div>
-      <h1>이력서</h1>
+    <>
+      <h1 className="text-center p-5">
+        이력서 {mode === "write" ? "작성" : mode === "edit" ? "수정" : "보기"}
+      </h1>
+
       <Form>
         <fieldset disabled={mode === "view" ? true : false}>
-          {/* 경력 (직장 이름, 직무) */}
-          {career.map((ele, idx) => (
-            <Form.Group
-              as={Row}
-              className="mb-3"
-              controlId="formHorizontalEmail"
-              key={idx}
-            >
-              <Form.Label column sm={2}>
-                {idx === 0 ? "경력" : ""}
-              </Form.Label>
-              <Col sm={5}>
-                <Form.Control
-                  name="companyName"
-                  value={ele.companyName}
-                  onChange={(e) => handleChangeCareer(e, idx)}
-                  placeholder={`직장 이름 ${idx + 1}`}
-                />
-              </Col>
-              <Col sm={5}>
-                <Form.Control
-                  name="work"
-                  value={ele.job}
-                  onChange={(e) => handleChangeCareer(e, idx)}
-                  placeholder={`직무 ${idx + 1}`}
-                />
-              </Col>
-            </Form.Group>
-          ))}
-          <Row>
-            <Col className="mb-3" sm={{ span: 10, offset: 2 }}>
-              <ButtonGroup>
-                <Button variant="outline-secondary" onClick={addCareer}>
-                  추가
-                </Button>
-                <Button variant="outline-secondary" onClick={deleteCareer}>
-                  삭제
-                </Button>
-              </ButtonGroup>
-            </Col>
-          </Row>
-
-          {/* 희망 직무 */}
+          {/* 제목 */}
           <Form.Group as={Row} className="mb-3">
             <Form.Label column sm={2}>
-              희망 직무
+              이력서 제목
             </Form.Label>
             <Col sm={10}>
               <Form.Control
-                name="desiredJob"
-                value={resume.desiredJob}
-                onChange={handleChangeResume}
-                placeholder="지원하고자 하는 직무"
+                name="title"
+                value={notAddableItem.title}
+                onChange={handleChangeNotAddableItem}
+                placeholder="이력서의 제목"
+              />
+            </Col>
+          </Form.Group>
+          {/* 경력 */}
+          <ResumeAddableInput
+            title={"경력"}
+            placeholder={"예시) A회사에서 n년 동안 xxx 서비스 개발"}
+            getState={getCareer}
+            initState={initCareer}
+          />
+          {/* 수상 이력 */}
+          <ResumeAddableInput
+            title={"수상 이력"}
+            placeholder={"예시) B 경진대회 x 상"}
+            getState={getAward}
+            initState={initAward}
+          />
+
+          {/* 사용 언어 */}
+          <Form.Group as={Row} className="mb-3">
+            <Form.Label column sm={2}>
+              사용 언어
+            </Form.Label>
+            <Col sm={10}>
+              <Form.Control
+                name="language"
+                value={notAddableItem.language}
+                onChange={handleChangeNotAddableItem}
+                placeholder="예시) C, python 등"
               />
             </Col>
           </Form.Group>
@@ -132,11 +147,12 @@ const Resume = () => {
             </Form.Label>
             <Col sm={10}>
               <Form.Control
-                name="introduce"
-                value={resume.introduce}
-                onChange={handleChangeResume}
+                name="introduction"
+                value={notAddableItem.introduction}
+                onChange={handleChangeNotAddableItem}
                 as="textarea"
                 placeholder="기술적인 자기소개 (3~4 줄)"
+                rows={6}
               />
             </Col>
           </Form.Group>
@@ -145,16 +161,18 @@ const Resume = () => {
         <Form.Group as={Row} className="mb-3">
           <Col sm={{ span: 10, offset: 2 }}>
             {mode === "write" || mode === "edit" ? (
-              <Button type="submit">저장</Button>
+              <Button onClick={handleSubmit}>저장</Button>
             ) : mode === "view" ? (
-              <Button variant="secondary">수정</Button>
+              <Button variant="secondary" onClick={onClickEdit}>
+                수정
+              </Button>
             ) : (
               <></>
             )}
           </Col>
         </Form.Group>
       </Form>
-    </div>
+    </>
   );
 };
 

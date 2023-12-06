@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Card, Col } from "react-bootstrap";
 import { createSearchParams, useNavigate } from "react-router-dom";
 
-const ResumeItem = ({ userId, resumeId, title, date }) => {
+const ResumeItem = ({ userId, resumeId, title }) => {
   const navigate = useNavigate();
 
   // 이력서 보기 또는 수정으로 이동
@@ -19,10 +19,10 @@ const ResumeItem = ({ userId, resumeId, title, date }) => {
 
   return (
     <Col key={resumeId}>
-      <Card style={{ width: "23rem" }}>
-        <Card.Body>
-          <Card.Title>{title}</Card.Title>
-          <Card.Subtitle className="mb-2 text-muted">{date}</Card.Subtitle>
+      <Card style={{ width: "16rem", height: "8rem" }}>
+        <Card.Body className="text-center">
+          <Card.Text>{title}</Card.Text>
+
           <Button
             variant="outline-primary"
             onClick={() => navigateToResume("view")}

@@ -1,3 +1,4 @@
+import "./global.css";
 import { useNavigate, Route, Routes, Link } from "react-router-dom";
 
 import Main from "./pages/Main/Main";
