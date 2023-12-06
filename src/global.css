@@ -10,5 +10,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Serif+KR&display=swap");
 
 .App {
+  background-color: #f6f6f6;
   font-family: "Noto Serif KR", serif;
+  min-height: 100vh;
 }

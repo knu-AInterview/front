@@ -13,7 +13,7 @@ const Resume = () => {
 
   // 추가 및 수정이 없는 항목: 제목, 사용 언어, 자기소개
   const [notAddableItem, setNotAddableItem] = useState({
-    title: new Date().toLocaleString(),
+    title: "",
     introduction: "",
     language: "",
   });
@@ -27,11 +27,11 @@ const Resume = () => {
 
   // 추가 및 수정이 있는 항목
   // 경력
-  const [career, setCareer] = useState([]);
+  const [career, setCareer] = useState([""]);
   const getCareer = (state) => setCareer(state);
   const [initCareer, setInitCareer] = useState([]);
   // 수상 이력
-  const [award, setAward] = useState([]);
+  const [award, setAward] = useState([""]);
   const getAward = (state) => setAward(state);
   const [initAward, setInitAward] = useState([]);
 

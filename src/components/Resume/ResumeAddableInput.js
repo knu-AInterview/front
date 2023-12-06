@@ -22,7 +22,7 @@ const ResumeAddableInput = ({ title, placeholder, getState, initState }) => {
   );
 
   useEffect(() => {
-    setState(initState);
+    initState.length !== 0 && setState(initState);
   }, [initState]);
 
   useEffect(() => {
@@ -48,10 +48,10 @@ const ResumeAddableInput = ({ title, placeholder, getState, initState }) => {
       <Row>
         <Col className="mb-3" sm={{ span: 10, offset: 2 }}>
           <ButtonGroup>
-            <Button variant="outline-secondary" onClick={addState}>
+            <Button variant="outline-success" onClick={addState}>
               추가
             </Button>
-            <Button variant="outline-secondary" onClick={deleteState}>
+            <Button variant="outline-danger" onClick={deleteState}>
               삭제
             </Button>
           </ButtonGroup>
