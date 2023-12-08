@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import ResumeAddableInput from "../components/Resume/ResumeAddableInput";
+import axiosInstance from "./Auth/axiosInstance";
 
 const Resume = () => {
   const navigate = useNavigate();
@@ -37,11 +38,11 @@ const Resume = () => {
 
   // 서버로부터 데이터 받아오기
   const getResumeData = async () => {
-    const res = await fetch("/data/resume.json", {
+    const res = await axiosInstance(`http://localhost:8080/api/member/resume/${resumeId}`, {
       method: "GET",
       // body: JSON.stringify({ mode: mode }),
     })
-      .then((res) => res.json())
+      .then((res) => {return res.data})
       .catch((err) => {
         // return dummyResumeData;
         alert("이력서 가져오기 실패");
@@ -72,19 +73,31 @@ const Resume = () => {
       resumeId: resumeId, // resume id (null if wrtie mode)
     };
 
-    fetch("/api/resume", {
-      method: "POST", // 작성 -> write ,수정 -> put
-      body: JSON.stringify(resumeData),
-    }).then((res) => {
-      if (res.status === 200) {
-        alert("저장 완료");
-        setSearchParams({ mode: "view" });
-        // navigate("/");
-      } else {
-        alert("저장 실패");
-        setSearchParams({ mode: "view" });
-      }
-    });
+    axiosInstance({
+      url: "http://localhost:8080/api/resume",
+      method: 'POST',
+      withCredentials: true,
+      data: resumeData
+    }).then((res) => {if (res.status === 200) {
+      alert('저장 완료')
+      setSearchParams({mode: 'view'})
+    } else {
+      alert('저장 실패')
+    }})
+
+    // fetch("/api/resume", {
+    //   method: "POST", // 작성 -> write ,수정 -> put
+    //   body: JSON.stringify(resumeData),
+    // }).then((res) => {
+    //   if (res.status === 200) {
+    //     alert("저장 완료");
+    //     setSearchParams({ mode: "view" });
+    //     // navigate("/");
+    //   } else {
+    //     alert("저장 실패");
+    //     setSearchParams({ mode: "view" });
+    //   }
+    // });
   };
 
   useEffect(() => {

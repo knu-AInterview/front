@@ -30,8 +30,8 @@ export const AccountFunctionContext = React.createContext();
 
 const App = () => {
   // 계정 정보 state
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const [nickName, setNickName] = useState("test");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [nickName, setNickName] = useState("");
 
   // 로그인 시
   const onLoggedIn = useCallback((nickName) => {
@@ -48,6 +48,8 @@ const App = () => {
   const accountFunction = useMemo(() => {
     return { onLoggedIn, onLoggedOut };
   });
+
+  console.log('loggedin', isLoggedIn)
 
   return (
     <AccountStateContext.Provider value={{ isLoggedIn, nickName }}>

@@ -87,12 +87,12 @@ const SecondPage = ({ onBack, onComplete }) => {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([
     {
-      text: questionsFromQnA[qnaIdx][qnaIdx].text,
-      hiddenText: questionsFromQnA[qnaIdx][qnaIdx].hiddenText,
+      text: questionsFromQnA[qnaIdx % qnaList.length][qnaIdx% qnaList.length].text,
+      hiddenText: questionsFromQnA[qnaIdx% qnaList.length][qnaIdx% qnaList.length].hiddenText,
 
       isBot: true,
 
-      buttons: questionsFromQnA[qnaIdx][qnaIdx].buttons,
+      buttons: questionsFromQnA[qnaIdx% qnaList.length][qnaIdx% qnaList.length].buttons,
 
       // text: scenarios[0].text,
       // hiddenText: scenarios[0].hiddenText,
@@ -342,7 +342,7 @@ const SecondPage = ({ onBack, onComplete }) => {
               <Button color="primary" onClick={onBack}>
                 뒤로가기
               </Button>{" "}
-              <Button color="success" onClick={onComplete}>
+              <Button color="success" onClick={() => {navigate('/')}}>
                 완료
               </Button>
             </div>

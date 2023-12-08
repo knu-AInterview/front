@@ -9,15 +9,16 @@ const Mypage = () => {
 
   const getResumeListData = async () => {
     const res = await axiosInstance
-      .get("/data/resumeList.json")
+      .get("http://localhost:8080/api/member/resume/list")
       .then((res) => {
-        return res;
+          console.log(res);
+          return res;
       })
       .catch((err) => {
         alert("이력서 목록 가져오기 실패");
       });
 
-    const initresumeList = res.body.map((it) => {
+    const initresumeList = res.data.map((it) => {
       return {
         resumeId: it.resumeId,
         title: it.title,

@@ -33,6 +33,24 @@ const FirstPageContent = ({ onNext, onCancel }) => {
   const [selectedResumeId, setSelectedResumeId] = useState(-1);
   const [selectedResumeObject, setSelectedResumeObject] = useState(null);
 
+  const getResumeData = async () => {
+    const res = await axiosInstance({
+      url: "http://localhost:8080/api/member/resume",
+      method: "GET",
+      withCredentials: true,
+    })
+      .then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          console.log("Ok!");
+          return res.data;
+        }
+      })
+      .catch((error) => {});
+
+      setData(res)
+    }
+
   useEffect(() => {
     // Fetch data from the local JSON file
     // fetch("/data/data.json")
@@ -40,19 +58,20 @@ const FirstPageContent = ({ onNext, onCancel }) => {
     //   .then((jsonData) => setData(jsonData.body))
     //   .catch((error) => console.error("Error fetching data:", error));
 
-    axiosInstance({
-      url: "http://localhost:8080/api/member/resume",
-      method: "GET",
-      withCredentials: true,
-    })
-      .then((result) => {
-        console.log(result);
-        if (result.status === 200) {
-          // window.open("/", "_self");
-          console.log("Ok!");
-        }
-      })
-      .catch((error) => {});
+    // axiosInstance({
+    //   url: "http://localhost:8080/api/member/resume",
+    //   method: "GET",
+    //   withCredentials: true,
+    // })
+    //   .then((result) => {
+    //     console.log(result);
+    //     if (result.status === 200) {
+    //       // window.open("/", "_self");
+    //       console.log("Ok!");
+    //     }
+    //   })
+    //   .catch((error) => {});
+    getResumeData()
   }, []);
 
   const handleJobButtonClick = (selectedJob) => {
@@ -74,12 +93,12 @@ const FirstPageContent = ({ onNext, onCancel }) => {
       setOpen("");
     } else {
       setOpen(id);
-      const selectedResume = data.find((item) => item.id === parseInt(id));
+      const selectedResume = data.find((item) => item.resumeId === parseInt(id));
       setSelectedResumeObject(selectedResume);
       console.log("222selected resume:", selectedResume);
       // const selectedResumeId = selectedResume.id;
       // console.log("Selected Resume id:", selectedResumeId);
-      setSelectedResumeId(selectedResume.id);
+      setSelectedResumeId(selectedResume.resumeId);
       // onSelectResume(selectedResume ? selectedResume.name : "");
     }
   };
@@ -113,14 +132,14 @@ const FirstPageContent = ({ onNext, onCancel }) => {
       const sendData = {
         title: title,
         // resumeid: selectedResumeId,
-        resumeId: selectedResumeObject.id,
+        resumeDto: selectedResumeObject,
         job: job,
         requirement: requirement,
       };
 
       try {
         const response = await axiosInstance.post(
-          "http://localhost:8080/api/saveData",
+          "http://localhost:8080/api/interview",
           //   "https://jsonplaceholder.typicode.com/posts",
           sendData,
           {
@@ -170,11 +189,11 @@ const FirstPageContent = ({ onNext, onCancel }) => {
       </p>
       <Accordion flush open={open} toggle={toggle}>
         {data.map((item, index) => (
-          <AccordionItem key={item.id}>
-            <AccordionHeader targetId={item.id.toString()}>
+          <AccordionItem key={item.resumeId}>
+            <AccordionHeader targetId={item.resumeId.toString()}>
               {item.title}
             </AccordionHeader>
-            <AccordionBody accordionId={item.id.toString()}>
+            <AccordionBody accordionId={item.resumeId.toString()}>
               {/* <strong>{`Resume Title: ${item.title}.`}</strong> */}
               {/* <br /> */}
               {`Career: ${item.career.join(", ")}`}

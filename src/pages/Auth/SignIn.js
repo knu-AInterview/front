@@ -43,12 +43,11 @@ const SignIn = ({ setIsLogin, setUser, SignInOnRequestClose }) => {
       },
     })
       .then((result) => {
-        console.log(result);
-        const accessToken = Cookies.get("accessToken");
-        console.log("access token:", accessToken);
         if (result.status === 200) {
           // window.open("/", "_self");
+          onLoggedIn('test')
           console.log("Login Ok!");
+          navigate('/')
         }
       })
       .catch((error) => {});
