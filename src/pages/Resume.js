@@ -78,9 +78,11 @@ const Resume = () => {
     }).then((res) => {
       if (res.status === 200) {
         alert("저장 완료");
-        navigate("/");
+        setSearchParams({ mode: "view" });
+        // navigate("/");
       } else {
         alert("저장 실패");
+        setSearchParams({ mode: "view" });
       }
     });
   };

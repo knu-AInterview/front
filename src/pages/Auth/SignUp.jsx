@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+// import "./SignUp.css";
+import axios from "axios";
 
-const SignUp = () => {
+const SignUp = ({ SignUpOnRequestClose }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passowrdConfirm, setPasswordConfirm] = useState("");
@@ -27,19 +30,63 @@ const SignUp = () => {
     return password === passowrdConfirm ? "valid" : "invalid";
   };
 
-  const handleSubmit = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
+  const handleSubmit = async () => {
+    const sendData = {
+      email: email,
+      password: password,
+      nickname: username,
+    };
 
-    setValidated(true);
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/auth/signup",
+        sendData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("Server Response:", response.data);
+      // toggleModal();
+
+      // TODO :: Navigate to Page 2
+      // navigate("/interview", { state: { resumeData: response.data } });
+    } catch (error) {
+      console.error("Error sending data:", error);
+    }
+  };
+
+  const handleDone = async () => {
+    const sendData = {
+      email: email,
+      password: password,
+      nickname: username,
+    };
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/auth/signup",
+        sendData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("Server Response:", response.data);
+      // toggleModal();
+
+      // TODO :: Navigate to Page 2
+      // navigate("/interview", { state: { resumeData: response.data } });
+    } catch (error) {
+      console.error("Error sending data:", error);
+    }
   };
 
   return (
-    <div>
-      <h1>회원 가입</h1>
+    <>
+      <h1 className="text-center p-5">회원 가입</h1>
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
           <Form.Label>이메일</Form.Label>
@@ -96,11 +143,16 @@ const SignUp = () => {
             닉네임은 3글자 이상이어야 합니다.
           </Form.Control.Feedback>
         </Form.Group>
-        <Button variant="primary" type="submit">
-          회원가입
-        </Button>
+        <div className="buttons">
+          <Button color="primary" onClick={SignUpOnRequestClose}>
+            Cancel
+          </Button>
+          <Button variant="success" onClick={handleDone}>
+            회원가입
+          </Button>
+        </div>
       </Form>
-    </div>
+    </>
   );
 };
 
