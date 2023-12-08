@@ -1,0 +1,17 @@
+{
+  "status": 200,
+  "body": {
+    "resume": {
+      "title": "이력서 제목",
+      "career": ["경력 1", "경력 2"],
+      "award": ["수상이력 1", "수상이력 2"],
+      "language": "사용 언어",
+      "introduction": "자기 소개"
+    },
+    "qnaList": [
+      { "question": "질문1", "answer": "답변1" },
+      { "question": "질문2", "answer": "답변2" },
+      { "question": "질문3", "answer": "답변3" }
+    ]
+  }
+}

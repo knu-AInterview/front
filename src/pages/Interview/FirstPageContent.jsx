@@ -35,9 +35,9 @@ const FirstPageContent = ({ onNext, onCancel }) => {
 
   useEffect(() => {
     // Fetch data from the local JSON file
-    // fetch("http://localhost:8080/api/resume")
+    // fetch("/data/data.json")
     //   .then((response) => response.json())
-    //   .then((jsonData) => setData(jsonData))
+    //   .then((jsonData) => setData(jsonData.body))
     //   .catch((error) => console.error("Error fetching data:", error));
 
     axiosInstance({
@@ -45,9 +45,6 @@ const FirstPageContent = ({ onNext, onCancel }) => {
       method: "GET",
       withCredentials: true,
     })
-      // .then((response) => response.json())
-      // .then((jsonData) => setData(jsonData))
-
       .then((result) => {
         console.log(result);
         if (result.status === 200) {
@@ -92,59 +89,63 @@ const FirstPageContent = ({ onNext, onCancel }) => {
   };
 
   const handleDone = async () => {
-    // if (open) {
-    //   // onSelectResume(selectedResume);
-    //   // toggleModal();
-    //   // setOpen("");
+    if (open) {
+      // onSelectResume(selectedResume);
+      // toggleModal();
+      // setOpen("");
 
-    //   // 전송할 데이터 준비
-    //   // const sendData = {
-    //   //   data: data.map((resume) => ({
-    //   //     // id: resume.id,
-    //   //     // name: resume.name,
-    //   //     // job: resume.job,
-    //   //     // skills: resume.skills,
-    //   //     // otherInfo: resume.otherInfo,
-    //   //     // 다른 Resume 속성들도 필요한 대로 추가
-    //   //     title: title,
-    //   //     resumeid: resume.id,
-    //   //     job: job,
-    //   //     requirement: requirement,
-    //   //   })),
-    //   // };
-    //   // console.log(data);
-    //   const sendData = {
-    //     title: title,
-    //     // resumeid: selectedResumeId,
-    //     resume: selectedResumeObject,
-    //     job: job,
-    //     requirement: requirement,
-    //   };
+      // 전송할 데이터 준비
+      // const sendData = {
+      //   data: data.map((resume) => ({
+      //     // id: resume.id,
+      //     // name: resume.name,
+      //     // job: resume.job,
+      //     // skills: resume.skills,
+      //     // otherInfo: resume.otherInfo,
+      //     // 다른 Resume 속성들도 필요한 대로 추가
+      //     title: title,
+      //     resumeid: resume.id,
+      //     job: job,
+      //     requirement: requirement,
+      //   })),
+      // };
+      // console.log(data);
+      const sendData = {
+        title: title,
+        // resumeid: selectedResumeId,
+        resumeId: selectedResumeObject.id,
+        job: job,
+        requirement: requirement,
+      };
 
-    //   try {
-    //     const response = await axios.post(
-    //       "https://jsonplaceholder.typicode.com/posts",
-    //       sendData,
-    //       {
-    //         headers: {
-    //           "Content-Type": "application/json",
-    //         },
-    //       }
-    //     );
-    //     console.log("Server Response:", response.data);
-    //     // toggleModal();
+      try {
+        const response = await axiosInstance.post(
+          "http://localhost:8080/api/saveData",
+          //   "https://jsonplaceholder.typicode.com/posts",
+          sendData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log("Server Response:", response.data);
+        // toggleModal();
 
-    //     // TODO :: Navigate to Page 2
-    //     // navigate("/interview", { state: { resumeData: response.data } });
-    //     navigate("/main/second-page");
-    //   } catch (error) {
-    //     console.error("Error sending data:", error);
-    //   }
-    // } else {
-    //   // Done 버튼을 클릭했을 때, 모달이 열려있지 않거나 id가 0이하면 경고 메시지를 띄움
-    //   alert("Please select a valid resume before clicking 'Done'.");
-    // }
-    navigate("/interview/interview");
+        // TODO :: Navigate to Page 2
+        // navigate("/interview", { state: { resumeData: response.data } });
+        navigate("/interview/interview", {
+          state: {
+            dataFromServer: response.data,
+          },
+        });
+      } catch (error) {
+        console.error("Error sending data:", error);
+      }
+    } else {
+      // Done 버튼을 클릭했을 때, 모달이 열려있지 않거나 id가 0이하면 경고 메시지를 띄움
+      alert("Please select a valid resume before clicking 'Done'.");
+    }
   };
 
   return (

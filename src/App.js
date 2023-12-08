@@ -1,4 +1,5 @@
 import "./global.css";
+import "./App.css";
 import { useNavigate, Route, Routes, Link } from "react-router-dom";
 
 import Main from "./pages/Main/Main";
@@ -20,6 +21,7 @@ import SignIn from "./pages/Auth/SignIn";
 import MainPage from "./pages/Interview/MainPage";
 import FirstPageContent from "./pages/Interview/FirstPageContent";
 import SecondPage from "./pages/Interview/SecondPage";
+import InterviewRecord from "./pages/InterviewRecord";
 
 // 계정 정보(isLoggedIn, nickName) context
 export const AccountStateContext = React.createContext();
@@ -51,29 +53,32 @@ const App = () => {
     <AccountStateContext.Provider value={{ isLoggedIn, nickName }}>
       <AccountFunctionContext.Provider value={accountFunction}>
         <div className="App">
-          <NavigationBar />
-          <Container>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/main" element={<Main />} />
-              <Route path="/page1" element={<Page1 />} />
-              <Route path="/page2" element={<Page2 />} />
-              <Route
+          <div className="gradient__bg">
+            <NavigationBar />
+            <Container>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                {/* <Route path="/main" element={<Main />} /> */}
+                {/* <Route path="/page1" element={<Page1 />} /> */}
+                {/* <Route path="/page2" element={<Page2 />} /> */}
+                {/* <Route
                 path="/interview/record/:active"
                 element={<InterviewRecordList />}
-              />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/resume" element={<Resume />} />
-              <Route path="/resume/list" element={<Mypage />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/signin" element={<SignIn />} />
-              <Route
-                path="/interview/requirement"
-                element={<FirstPageContent />}
-              />
-              <Route path="/interview/interview" element={<SecondPage />} />
-            </Routes>
-          </Container>
+              /> */}
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="/resume" element={<Resume />} />
+                <Route path="/resume/list" element={<Mypage />} />
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="/signin" element={<SignIn />} />
+                <Route
+                  path="/interview/requirement"
+                  element={<FirstPageContent />}
+                />
+                <Route path="/interview/interview" element={<SecondPage />} />
+                <Route path="/interview/list" element={<InterviewRecord />} />
+              </Routes>
+            </Container>
+          </div>
         </div>
       </AccountFunctionContext.Provider>
     </AccountStateContext.Provider>

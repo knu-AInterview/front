@@ -3,6 +3,7 @@ import { Button, Form } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 // import "./SignUp.css";
 import axios from "axios";
+import axiosInstance from "./axiosInstance";
 
 const SignUp = ({ SignUpOnRequestClose }) => {
   const [email, setEmail] = useState("");
@@ -38,7 +39,7 @@ const SignUp = ({ SignUpOnRequestClose }) => {
     };
 
     try {
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         "http://localhost:8080/api/auth/signup",
         sendData,
         {

@@ -52,6 +52,14 @@ const NavigationBar = () => {
             >
               이력서 보기
             </Nav.Link>
+            {/* 인터뷰 기록 보기 */}
+            <Nav.Link
+              onClick={() => {
+                onClickAccountRequired("/interview/list");
+              }}
+            >
+              면접 기록 보기
+            </Nav.Link>
           </Nav>
 
           {isLoggedIn ? (

@@ -1,19 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ResumeList from "../components/Resume/ResumeList";
+import axiosInstance from "./Interview/axiosInstance";
 
 const Mypage = () => {
   const { userId } = useParams(); // 유저 아이디 번호
   const [resumeList, setresumeList] = useState([]); // 이력서 목록 데이타
 
   const getResumeListData = async () => {
-    const res = await fetch("/data/resumeList.json")
-      .then((res) => res.json())
+    const res = await axiosInstance
+      .get("/data/resumeList.json")
+      .then((res) => {
+        return res;
+      })
       .catch((err) => {
         alert("이력서 목록 가져오기 실패");
       });
 
-    const initresumeList = res.map((it) => {
+    const initresumeList = res.body.map((it) => {
       return {
         resumeId: it.resumeId,
         title: it.title,

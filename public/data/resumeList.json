@@ -1,14 +1,17 @@
-[
-  {
-    "resumeId": 1,
-    "title": "이력서 제목 1"
-  },
-  {
-    "resumeId": 2,
-    "title": "이력서 제목 2"
-  },
-  {
-    "resumeId": 3,
-    "title": "이력서 제목 3"
-  }
-]
+{
+  "status": 200,
+  "body": [
+    {
+      "resumeId": 1,
+      "title": "이력서 제목 1"
+    },
+    {
+      "resumeId": 2,
+      "title": "이력서 제목 2"
+    },
+    {
+      "resumeId": 3,
+      "title": "이력서 제목 3"
+    }
+  ]
+}
