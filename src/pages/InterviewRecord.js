@@ -1,37 +1,55 @@
 import React, { useEffect, useState } from "react";
 import InterviewList from "../components/InterviewRecord/InterviewList";
+import axiosInstance from "./Interview/axiosInstance";
 
 const InterviewRecord = () => {
   const [data, setData] = useState([]);
 
   // 인터뷰 제목, 인터뷰 아이디
-  const getData = async () => {
-    const res = await fetch("/data/interviewList.json")
-      .then((res) => res.json())
+  const getInterviewData = async () => {
+    const resData = await axiosInstance
+      .get("/data/interviewList.json")
+      .then((res) => {
+        return res.status === 200 ? res.data : null;
+      })
       .catch((err) => {
-        alert("불러오기 실패");
-        console.log(err);
+        alert("이력서 목록을 가져오지 못하였습니다.");
+        return null;
       });
 
-    const initData = res.body.map((it) => {
-      return {
-        interviewId: it.interviewId,
-        interviewTitle: it.interviewTitle,
-      };
-    });
-
-    setData(initData);
+    try {
+      const initData = resData.map((it) => {
+        return {
+          interviewId: it.interviewId,
+          interviewTitle: it.interviewTitle,
+        };
+      });
+      setData(initData);
+    } catch (error) {
+      // 임시 코드 시작
+      setData([
+        { interviewId: 1, interviewTitle: "인터뷰 제목 1" },
+        { interviewId: 3, interviewTitle: "인터뷰 제목 2" },
+        { interviewId: 4, interviewTitle: "인터뷰 제목 3" },
+        { interviewId: 5, interviewTitle: "인터뷰 제목 4" },
+        { interviewId: 10, interviewTitle: "인터뷰 제목 5" },
+      ]);
+      // 임시 코드 끝
+      return;
+    }
   };
 
   useEffect(() => {
-    getData();
+    getInterviewData();
   }, []);
 
   return (
-    <div>
-      InterviewRecord
+    <>
+      <h1 className="text-center p-5">마이 페이지</h1>
+      <h3 className="text-center">나의 인터뷰 목록</h3>
+      <hr className="p-2" />
       <InterviewList interviewList={data} />
-    </div>
+    </>
   );
 };
 

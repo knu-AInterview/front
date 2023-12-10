@@ -5,9 +5,17 @@
   scroll-behavior: smooth;
 }
 
-body {
+.App {
+  /* background-color: #f6f6f6; */
   background: var(--color-bg);
+
+  font-family: "Noto Serif KR", serif;
+  min-height: 100vh;
 }
+
+/* body {
+  background: var(--color-bg);
+} */
 
 a {
   color: unset;

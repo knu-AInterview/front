@@ -48,10 +48,10 @@ const ResumeAddableInput = ({ title, placeholder, getState, initState }) => {
       <Row>
         <Col className="mb-3" sm={{ span: 10, offset: 2 }}>
           <ButtonGroup>
-            <Button variant="outline-success" onClick={addState}>
+            <Button variant="success" onClick={addState}>
               추가
             </Button>
-            <Button variant="outline-danger" onClick={deleteState}>
+            <Button variant="danger" onClick={deleteState}>
               삭제
             </Button>
           </ButtonGroup>

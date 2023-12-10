@@ -45,9 +45,9 @@ const SignIn = ({ setIsLogin, setUser, SignInOnRequestClose }) => {
       .then((result) => {
         if (result.status === 200) {
           // window.open("/", "_self");
-          onLoggedIn('test')
+          onLoggedIn("test");
           console.log("Login Ok!");
-          navigate('/')
+          navigate("/");
         }
       })
       .catch((error) => {});
@@ -89,17 +89,17 @@ const SignIn = ({ setIsLogin, setUser, SignInOnRequestClose }) => {
             Login
           </Button>
         </div> */}
-        <div className="buttons">
+        <div className="buttons text-center p-4">
           <Button
-            color="primary"
+            variant="danger"
             onClick={() => {
               navigate("/");
             }}
           >
-            Cancel
-          </Button>
+            취소
+          </Button>{" "}
           <Button variant="success" onClick={handleDone}>
-            Log in
+            로그인
           </Button>
         </div>
       </Form>

@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Card, Col } from "react-bootstrap";
 import { createSearchParams, useNavigate } from "react-router-dom";
 
-const ResumeItem = ({ userId, resumeId, title }) => {
+const ResumeItem = ({ resumeId, title }) => {
   const navigate = useNavigate();
 
   // 이력서 보기 또는 수정으로 이동
@@ -10,7 +10,6 @@ const ResumeItem = ({ userId, resumeId, title }) => {
     navigate({
       pathname: "/resume",
       search: createSearchParams({
-        userId: userId,
         resumeId: resumeId,
         mode: mode,
       }).toString(),

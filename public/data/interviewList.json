@@ -1,6 +1,6 @@
 {
   "status": 200,
-  "body": [
+  "data": [
     { "interviewId": 1, "interviewTitle": "인터뷰 제목 1" },
     { "interviewId": 3, "interviewTitle": "인터뷰 제목 2" },
     { "interviewId": 4, "interviewTitle": "인터뷰 제목 3" },

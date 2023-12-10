@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import ResumeAddableInput from "../components/Resume/ResumeAddableInput";
 import axiosInstance from "./Auth/axiosInstance";
 
 const Resume = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   // mode에 따라 작성, 읽기, 수정
   const [searchParams, setSearchParams] = useSearchParams();
   const mode = searchParams.get("mode");
-  const userId = searchParams.get("userId");
+  // const userId = searchParams.get("userId");
   const resumeId = searchParams.get("resumeId");
 
   // 추가 및 수정이 없는 항목: 제목, 사용 언어, 자기소개
@@ -38,30 +38,40 @@ const Resume = () => {
 
   // 서버로부터 데이터 받아오기
   const getResumeData = async () => {
-    const res = await axiosInstance(`http://localhost:8080/api/member/resume/${resumeId}`, {
-      method: "GET",
-      // body: JSON.stringify({ mode: mode }),
-    })
-      .then((res) => {return res.data})
+    const res = await axiosInstance(
+      `http://localhost:8080/api/member/resume/${resumeId}`,
+      {
+        method: "GET",
+        // body: JSON.stringify({ mode: mode }),
+      }
+    )
+      .then((res) => {
+        return res.data;
+      })
       .catch((err) => {
         // return dummyResumeData;
         alert("이력서 가져오기 실패");
       });
 
-    setNotAddableItem({
-      title: res.title,
-      language: res.language,
-      introduction: res.introduction,
-    });
-    setCareer(res.career);
-    setAward(res.award);
-    setInitCareer(res.career);
-    setInitAward(res.award);
+    try {
+      setNotAddableItem({
+        title: res.title,
+        language: res.language,
+        introduction: res.introduction,
+      });
+      setCareer(res.career);
+      setAward(res.award);
+      setInitCareer(res.career);
+      setInitAward(res.award);
+    } catch (error) {
+      return;
+    }
   };
 
   // 수정 버튼 클릭
   const onClickEdit = () => {
-    setSearchParams({ userId: userId, resumeId: resumeId, mode: "edit" });
+    // setSearchParams({ userId: userId, resumeId: resumeId, mode: "edit" });
+    setSearchParams({ resumeId: resumeId, mode: "edit" });
   };
 
   // 저장 버튼 클릭
@@ -75,15 +85,17 @@ const Resume = () => {
 
     axiosInstance({
       url: "http://localhost:8080/api/resume",
-      method: 'POST',
+      method: mode === "write" ? "POST" : mode === "edit" ? "PUT" : null,
       withCredentials: true,
-      data: resumeData
-    }).then((res) => {if (res.status === 200) {
-      alert('저장 완료')
-      setSearchParams({mode: 'view'})
-    } else {
-      alert('저장 실패')
-    }})
+      data: resumeData,
+    }).then((res) => {
+      if (res.status === 200) {
+        alert("저장 완료");
+        setSearchParams({ mode: "view" });
+      } else {
+        alert("저장 실패");
+      }
+    });
 
     // fetch("/api/resume", {
     //   method: "POST", // 작성 -> write ,수정 -> put
@@ -101,7 +113,10 @@ const Resume = () => {
   };
 
   useEffect(() => {
-    (mode === "view" || mode === "edit") && getResumeData();
+    // (mode === "view" || mode === "edit") && getResumeData();
+    if (mode === "view" || mode === "edit") {
+      getResumeData();
+    }
   }, []);
 
   return (

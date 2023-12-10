@@ -144,10 +144,10 @@ const SignUp = ({ SignUpOnRequestClose }) => {
             닉네임은 3글자 이상이어야 합니다.
           </Form.Control.Feedback>
         </Form.Group>
-        <div className="buttons">
-          <Button color="primary" onClick={SignUpOnRequestClose}>
-            Cancel
-          </Button>
+        <div className="buttons text-center p-2">
+          <Button variant="danger" onClick={SignUpOnRequestClose}>
+            취소
+          </Button>{" "}
           <Button variant="success" onClick={handleDone}>
             회원가입
           </Button>

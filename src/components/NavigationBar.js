@@ -17,17 +17,17 @@ const NavigationBar = () => {
   }, []);
 
   const onClickAccountRequired = (path) => {
-    isLoggedIn ? navigate(path) : alert("로그인이 필요합니다.");
+    isLoggedIn ? navigate(path) : navigate("/signin");
   };
 
   return (
-    <Navbar expand="md" className="bg-success-subtle">
+    <Navbar className="mynavbar" data-bs-theme="dark">
       <Container>
         <Navbar.Brand href="/">AInterview</Navbar.Brand>
         <Navbar.Toggle />
         <Navbar.Collapse>
           <Nav className="me-auto">
-            <Nav.Link href="/">홈</Nav.Link>
+            {/* <Nav.Link href="/">홈</Nav.Link> */}
             {/* /interview/requirement */}
             <Nav.Link
               onClick={() => {

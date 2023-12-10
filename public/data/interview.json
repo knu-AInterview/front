@@ -1,6 +1,6 @@
 {
   "status": 200,
-  "body": {
+  "data": {
     "resume": {
       "title": "이력서 제목",
       "career": ["경력 1", "경력 2"],
@@ -11,7 +11,12 @@
     "qnaList": [
       { "question": "질문1", "answer": "답변1" },
       { "question": "질문2", "answer": "답변2" },
-      { "question": "질문3", "answer": "답변3" }
+      { "question": "질문3", "answer": "답변3" },
+      { "question": "질문4", "answer": "답변4" },
+      { "question": "질문5", "answer": "답변5" },
+      { "question": "질문6", "answer": "답변6" },
+      { "question": "질문7", "answer": "답변7" },
+      { "question": "질문8", "answer": "답변8" }
     ]
   }
 }

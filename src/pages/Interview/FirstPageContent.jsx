@@ -48,8 +48,8 @@ const FirstPageContent = ({ onNext, onCancel }) => {
       })
       .catch((error) => {});
 
-      setData(res)
-    }
+    setData(res);
+  };
 
   useEffect(() => {
     // Fetch data from the local JSON file
@@ -71,7 +71,7 @@ const FirstPageContent = ({ onNext, onCancel }) => {
     //     }
     //   })
     //   .catch((error) => {});
-    getResumeData()
+    getResumeData();
   }, []);
 
   const handleJobButtonClick = (selectedJob) => {
@@ -93,7 +93,9 @@ const FirstPageContent = ({ onNext, onCancel }) => {
       setOpen("");
     } else {
       setOpen(id);
-      const selectedResume = data.find((item) => item.resumeId === parseInt(id));
+      const selectedResume = data.find(
+        (item) => item.resumeId === parseInt(id)
+      );
       setSelectedResumeObject(selectedResume);
       console.log("222selected resume:", selectedResume);
       // const selectedResumeId = selectedResume.id;
@@ -169,23 +171,24 @@ const FirstPageContent = ({ onNext, onCancel }) => {
 
   return (
     <div>
+      <h1 className="text-center p-5">요구사항 선택</h1>
       {/* title을 입력받는 Input 컴포넌트 */}
       <p>
         {" "}
         <br />
-        <strong>Enter your Interview Title.</strong>
+        <strong>인터뷰 제목</strong>
       </p>
       <Input
         type="textarea"
         rows="1"
-        placeholder="Enter your title"
+        placeholder="인터뷰 제목을 입력해주세요."
         value={title} // 현재 title 상태를 표시
         onChange={handleTitleChange} // 입력값이 변경될 때 호출되는 함수
       />
       <p>
         {" "}
         <br />
-        <strong>Select your resume.</strong>
+        <strong>이력서 선택</strong>
       </p>
       <Accordion flush open={open} toggle={toggle}>
         {data.map((item, index) => (
@@ -211,7 +214,7 @@ const FirstPageContent = ({ onNext, onCancel }) => {
       <p>
         {" "}
         <br />
-        <strong>Select your job.</strong>
+        <strong>희망 직군을 선택해주세요</strong>
       </p>
       <div>
         <Button
@@ -237,28 +240,28 @@ const FirstPageContent = ({ onNext, onCancel }) => {
       <p>
         {" "}
         <br />
-        <strong>Enter your requirement.</strong>
+        <strong>기업의 요구사항.</strong>
       </p>
       <Input
         type="textarea"
         rows="4"
-        placeholder="Enter your requrement"
+        placeholder="지원하고자 하는 기업의 요구사항을 입력해주세요."
         value={requirement} // 현재 title 상태를 표시
         onChange={handleRequirementChange} // 입력값이 변경될 때 호출되는 함수
       />
       <br />
-      <div className="buttons">
+      <div className="buttons text-center">
         <Button
           color="primary"
           onClick={() => {
             navigate("/");
           }}
         >
-          Cancel
-        </Button>
+          취소
+        </Button>{" "}
         {/* Done button outside the modal */}
         <Button color="success" onClick={handleDone}>
-          Done
+          다음
         </Button>
       </div>
     </div>
