@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* body {
   display: flex;
   justify-content: center;
@@ -11,6 +12,12 @@
 
 .App {
   font-family: "Noto Sans KR", sans-serif;
+=======
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+KR&display=swap");
+
+.App {
+  font-family: "Noto Serif KR", serif;
+>>>>>>> db43b7b147e5e56210ec5896601a6ef71652904d
   min-height: 100vh;
 }
 
