@@ -1,36 +1,7 @@
-// SecondPage.jsx
-// import React from "react";
-// import { Button } from "reactstrap";
-
-// const SecondPage = ({ onBack, onComplete }) => {
-//   return (
-//     <div>
-//       <h1>Second Page</h1>
-//       <p>This is the content of the second page.</p>
-//       <Button color="primary" onClick={onBack}>
-//         뒤로가기
-//       </Button>{" "}
-//       <Button color="success" onClick={onComplete}>
-//         완료
-//       </Button>
-//     </div>
-//   );
-// };
-
-// export default SecondPage;
-
 import React from "react";
 import "./SecondPage.css";
-// import gptLogo from "./assets/chatgpt.svg";
-// import addBtn from "./assets/add-30.png";
-// import msgIcon from "./assets/message.svg";
-// import home from "./assets/home.svg";
-// import saved from "./assets/bookmark.svg";
-// import rocket from "./assets/rocket.svg";
-// import sendBtn from "./assets/send.svg";
-// import userIcon from "../../assets/user.png";
-// import RobotImgLogo from "../../assets/smart_toy.png";
-// import { sendMsgToOpenAI } from "./openai";
+import userIcon from "../../assets/user.png";
+import RobotImgLogo from "../../assets/smart_toy.png";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.css";
@@ -40,7 +11,6 @@ const SecondPage = ({ onBack, onComplete }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { interviewId, qnaList } = location.state?.dataFromServer || {};
-  // console.log(qnaList[0]["question"]);
   const questionsFromQnA = qnaList.map((item, index) => {
     return {
       [index]: {
@@ -48,59 +18,44 @@ const SecondPage = ({ onBack, onComplete }) => {
         hiddenText: item.answer,
         buttons: [
           {
-            label: "show answer",
-            action: "open_link",
-            link: "/select-resume",
+            label: "",
           },
         ],
       },
     };
   });
-  // console.log(questionsFromQnA);
   const [buttonLabels, setButtonLabels] = useState(
     new Array(qnaList.length).fill("show answers")
   );
-  const [selectedResume, setSelectedResume] = useState(null);
-  const openResumeSelection = () => {
-    console.log("Selected Resume ID:", selectedResume);
-  };
+  console.log(buttonLabels);
 
   const [idx, setIdx] = useState(1);
   const [qnaIdx, setQnaIdx] = useState(0);
-  // const [questionsFromQnA, setQuestionsFromQnA] = useState([]);
-  // const scenarios = [
-  //   {
-  //     text: "안녕하세요!\nAInterview입니다. 이력서를 전송하여 AI가 모의 면접 질문과 답을 제공하는 서비스입니다.\n아래 버튼을 통해 이력서 선택을 완료해주세요!",
-  //     hiddenText: "",
-  //     buttons: [
-  //       {
-  //         label: "TOGGLE",
-  //         action: "open_link",
-  //         link: "/select-resume",
-  //       },
-  //     ],
-  //   },
-  // ];
-  const scenarios = [];
-  // console.log(scenarios);
   const msgEnd = useRef(null);
   const [input, setInput] = useState("");
+  const [disableInput, setDisableInput] = useState(false);
+
+  const scenarios = [
+    {
+      text: "안녕하세요!\nAInterview입니다. 지금부터 모의 면접을 시작하도록 하겠습니다.",
+      hiddenText: "",
+      buttons: [],
+    },
+    {
+      text: "수고 많으셨습니다. 모의 면접이 종료되었습니다. 아래의 '완료' 버튼을 면접을 종료해주세요.",
+      hiddenText: "",
+      buttons: [],
+    },
+  ];
   const [messages, setMessages] = useState([
     {
-      text: questionsFromQnA[qnaIdx % qnaList.length][qnaIdx% qnaList.length].text,
-      hiddenText: questionsFromQnA[qnaIdx% qnaList.length][qnaIdx% qnaList.length].hiddenText,
-
+      text: scenarios[0].text,
+      hiddenText: scenarios[0].hiddenText,
       isBot: true,
-
-      buttons: questionsFromQnA[qnaIdx% qnaList.length][qnaIdx% qnaList.length].buttons,
-
-      // text: scenarios[0].text,
-      // hiddenText: scenarios[0].hiddenText,
-      // isBot: true,
-      // buttons: scenarios[0].buttons,
+      buttons: scenarios[0].buttons,
     },
   ]);
-  const [toggledIndices, setToggledIndices] = useState([]);
+  const [toggledIndices, setToggledIndices] = useState(["show answers"]);
 
   const toggleVisibility = (index) => {
     setToggledIndices((prevToggledIndices) => {
@@ -129,8 +84,8 @@ const SecondPage = ({ onBack, onComplete }) => {
           }}
         >
           <img
-            // className="chatImg"
-            // src={message.isBot ? RobotImgLogo : userIcon}
+            className="chatImg"
+            src={message.isBot ? RobotImgLogo : userIcon}
             alt=""
           />
           <p className="txt">
@@ -155,7 +110,7 @@ const SecondPage = ({ onBack, onComplete }) => {
                   color="primary"
                   onClick={() => handleButtonClick(index, button)}
                 >
-                  {buttonLabels[index]}
+                  {buttonLabels[btnIndex]}
                 </Button>
               ))}
             </div>
@@ -174,13 +129,18 @@ const SecondPage = ({ onBack, onComplete }) => {
   }, [messages]);
 
   const simulateTyping = async (text, botMessage) => {
+    setDisableInput(true); // disable 상태로 설정
+
+    // 새로운 메시지 생성
+    const newBotMessage = { ...botMessage };
+
     for (let i = 0; i < text.length; i++) {
-      // Simulate typing effect by appending one letter at a time
-      await new Promise((resolve) => setTimeout(resolve, 20)); // Adjust the delay as needed
-      botMessage.text += text[i];
+      await new Promise((resolve) => setTimeout(resolve, 20));
+      newBotMessage.text += text[i];
       setMessages((prevMessages) => {
         const lastMessageIndex = prevMessages.length - 1;
-        prevMessages[lastMessageIndex] = { ...botMessage };
+        // 마지막 메시지만 업데이트
+        prevMessages[lastMessageIndex] = { ...newBotMessage };
         return [...prevMessages];
       });
     }
@@ -190,6 +150,7 @@ const SecondPage = ({ onBack, onComplete }) => {
     if (chatContainer) {
       chatContainer.scrollTop = chatContainer.scrollHeight;
     }
+    setDisableInput(false); // disable 상태 해제
   };
 
   const handleSend = async () => {
@@ -204,7 +165,22 @@ const SecondPage = ({ onBack, onComplete }) => {
     const chatContainer = document.getElementById("chat-container"); // Replace with the actual ID of your chat container
 
     setTimeout(async () => {
-      if (idx < scenarios.length) {
+      if (qnaIdx < questionsFromQnA.length) {
+        const userMessage = { text, hiddenText: "", isBot: false, buttons: [] };
+        setMessages([...messages, userMessage]);
+        console.log(questionsFromQnA, qnaIdx);
+        const botText = questionsFromQnA[qnaIdx][qnaIdx].text; // Question #{i}
+        const botHiddenText = questionsFromQnA[qnaIdx][qnaIdx].hiddenText; // Answer #{i}
+        const botMessage = {
+          text: "",
+          hiddenText: botHiddenText,
+          isBot: true,
+          buttons: questionsFromQnA[qnaIdx][qnaIdx].buttons,
+        };
+        setMessages([...messages, userMessage, botMessage]);
+        await simulateTyping(botText, botMessage);
+        setQnaIdx((prevQnaIdx) => prevQnaIdx + 1); // 여기서 질문 번호를 증가시킴
+      } else if (idx < scenarios.length) {
         const userMessage = { text, hiddenText: "", isBot: false, buttons: [] };
         setMessages([...messages, userMessage]);
 
@@ -219,30 +195,8 @@ const SecondPage = ({ onBack, onComplete }) => {
         setMessages([...messages, userMessage, botMessage]);
 
         await simulateTyping(botText, botMessage);
-        setIdx(idx + 1);
-      } else if (qnaIdx < questionsFromQnA.length) {
-        // const userMessage = { text, isBot: false, buttons: [] };
-        // setMessages([...messages, userMessage]);
-
-        // const res = await sendMsgToOpenAI(input);
-        // const botMessage = { text: res, isBot: true, buttons: [] };
-        const userMessage = { text, hiddenText: "", isBot: false, buttons: [] };
-        setMessages([...messages, userMessage]);
-        console.log(questionsFromQnA, qnaIdx);
-        const botText = questionsFromQnA[qnaIdx][qnaIdx].text; // Question #{i}
-        const botHiddenText = questionsFromQnA[qnaIdx][qnaIdx].hiddenText; // Answer #{i}
-        // console.log(botText, botHiddenText);
-        // console.log("BOTTEXT:", botText);
-        // const botMessage = { text: "", isBot: true, buttons: [] };
-        const botMessage = {
-          text: botText,
-          hiddenText: botHiddenText,
-          isBot: true,
-          buttons: questionsFromQnA[qnaIdx][qnaIdx].buttons,
-        };
-        setMessages([...messages, userMessage, botMessage]);
-        setQnaIdx(qnaIdx + 1);
-        await simulateTyping(botText, botMessage);
+        console.log(idx);
+        setIdx((prevIdx) => prevIdx + 1);
       }
 
       // Removed the scroll code from here
@@ -250,68 +204,16 @@ const SecondPage = ({ onBack, onComplete }) => {
   };
 
   const handleEnter = async (e) => {
-    if (e.key === "Enter") await handleSend();
-  };
-
-  const handleQuery = async (e) => {
-    const text = e.target.value;
-    setMessages([...messages, { text, isBot: false, buttons: [] }]);
-    // const res = await sendMsgToOpenAI(input);
-    setMessages([
-      ...messages,
-      { text, isBot: false, buttons: [] },
-      // { text: res, isBot: true, buttons: [] },
-    ]);
-  };
-
-  const handleLinkClick = (link) => {
-    alert(`Link clicked: ${link}`);
-    // 여기서 원하는 동작 수행 가능
+    if (input.trim() !== "" && e.key === "Enter") await handleSend();
   };
 
   const handleButtonClick = (i, button) => {
-    // alert(`Button clicked: ${button.label}`);
     toggleVisibility(i);
-
-    // // Check if the button has a link property
-    // if (button.link) {
-    //   // Customize window features
-    //   const windowFeatures =
-    //     "width=600,height=400,menubar=no,toolbar=no,location=no,status=no";
-
-    //   // Open the link in a new window with custom features
-    //   const childWindow = window.open(button.link, "_blank", windowFeatures);
-
-    //   // 이벤트 리스너 등록
-    //   window.addEventListener("message", (event) => {
-    //     // 이벤트 데이터 확인
-    //     const dataFromChild = event.data;
-    //     console.log(dataFromChild);
-    //     if (Array.isArray(dataFromChild)) {
-    //       setQuestionsFromQnA((prevQuestions) => [
-    //         ...prevQuestions,
-    //         ...dataFromChild.map((q) => q.question),
-    //       ]);
-    //     } else if (
-    //       typeof dataFromChild === "object" &&
-    //       dataFromChild.question
-    //     ) {
-    //       // If dataFromChild is a single question object
-    //       setQuestionsFromQnA((prevQuestions) => [
-    //         ...prevQuestions,
-    //         dataFromChild.question,
-    //       ]);
-    //     } else {
-    //       console.error("Invalid data received from the child:", dataFromChild);
-    //     }
-    //   });
-    // }
-    // Handle other actions if needed
   };
   return (
     <div className="App">
       <div className="App">
-        <div className="sideBar">{/* ... (이전 코드) */}</div>
+        <div className="sideBar">{/* */}</div>
         <div className="main">
           <div className="chats">
             {messages.map((message, i) =>
@@ -323,26 +225,40 @@ const SecondPage = ({ onBack, onComplete }) => {
             <div className="inp">
               <input
                 type="text"
-                placeholder="Send a message"
+                placeholder={
+                  disableInput
+                    ? "AI generates questions.."
+                    : idx >= scenarios.length
+                    ? "Interview is done."
+                    : "Send a message"
+                }
                 value={input}
                 onKeyDown={handleEnter}
                 onChange={(e) => {
                   setInput(e.target.value);
                 }}
+                disabled={disableInput || idx >= scenarios.length}
               />
-              <Button className="send" color="primary" onClick={handleSend}>
+              <Button
+                className="send"
+                color="primary"
+                onClick={handleSend}
+                disabled={input.trim() === ""}
+              >
                 Send
               </Button>
             </div>
             <p>
-              ChatGPT may produce inaccurate information about people, places,
-              or facts. ChatGPT August 20 Version.
+              Try AInterview to receive anticipated interview questions and
+              answers! AInterview@KNU
             </p>
             <div>
-              <Button color="primary" onClick={onBack}>
-                뒤로가기
-              </Button>{" "}
-              <Button color="success" onClick={() => {navigate('/')}}>
+              <Button
+                color="success"
+                onClick={() => {
+                  navigate("/");
+                }}
+              >
                 완료
               </Button>
             </div>

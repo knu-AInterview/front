@@ -20,6 +20,10 @@ body .SecondPage {
   display: flex;
 }
 
+.SecondPage .inp {
+  background: black !important;
+}
+
 .sideBar {
   flex: 3;
   border-right: 1px solid rgb(100, 100, 100);
@@ -132,7 +136,7 @@ body .SecondPage {
 .chats {
   overflow-y: scroll;
   max-height: 500px;
-  max-width: 1200px;
+  width: 100%;
   scroll-behavior: smooth; /* Enable smooth scrolling */
 }
 
@@ -142,12 +146,19 @@ body .SecondPage {
 }
 
 .chats::-webkit-scrollbar-thumb {
-  background-color: #ccc;
+  /* background-color: #ccc; */
+  background-color: rgba(
+    204,
+    204,
+    204,
+    0.2
+  ); /* 투명도를 조절하여 스크롤바를 미세하게 가림 */
+
   border-radius: 4px;
 }
 
 .chats::-webkit-scrollbar-track {
-  background-color: #f5f5f5;
+  background-color: transparent;
 }
 .chat {
   margin: 1rem;
@@ -211,6 +222,7 @@ body .SecondPage {
 
 .chatFooter > p {
   margin: 2rem 0;
+  color: white;
 }
 
 .txt {
