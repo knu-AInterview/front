@@ -16,7 +16,7 @@ const Mypage = () => {
       .catch((err) => {
         alert("이력서 목록 가져오기 실패");
         // 임시 코드 시작
-        return { data: [{ resumeId: 1, title: "title" }] };
+        // return { data: [{ resumeId: 1, title: "title" }] };
         // 임시 코드 끝
         return null;
       });

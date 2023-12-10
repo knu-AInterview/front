@@ -1,13 +1,13 @@
 import React, { useContext } from "react";
 import { useState } from "react";
 import "./Login.css";
-import axios from "axios";
-import { Button, Container, Form } from "react-bootstrap";
+// import axios from "axios";
+import { Button, Form } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 // import "./SignIn.css";
 import axiosInstance from "./axiosInstance";
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
 import { AccountFunctionContext } from "../../App";
 
 const SignIn = ({ setIsLogin, setUser, SignInOnRequestClose }) => {
@@ -44,13 +44,18 @@ const SignIn = ({ setIsLogin, setUser, SignInOnRequestClose }) => {
     })
       .then((result) => {
         if (result.status === 200) {
-          // window.open("/", "_self");
-          onLoggedIn("test");
-          console.log("Login Ok!");
+          try {
+            const nickname = result.data.nickname;
+            onLoggedIn(nickname === undefined ? "test" : nickname);
+          } catch (error) {
+            onLoggedIn("test");
+          }
           navigate("/");
         }
       })
-      .catch((error) => {});
+      .catch((error) => {
+        alert("login failed");
+      });
   };
 
   return (
@@ -59,10 +64,10 @@ const SignIn = ({ setIsLogin, setUser, SignInOnRequestClose }) => {
       <h1 className="text-center p-5">로그인</h1>
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
-          <Form.Label>아이디</Form.Label>
+          <Form.Label>이메일</Form.Label>
           <Form.Control
             type="email"
-            placeholder="email"
+            placeholder="예시) ainterview@gmail.com"
             onChange={(e) => setEmail(e.target.value)}
             value={email}
             required

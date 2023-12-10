@@ -43,13 +43,10 @@ const App = () => {
     return { onLoggedIn, onLoggedOut };
   });
 
-  console.log("loggedin", isLoggedIn);
-
   return (
     <AccountStateContext.Provider value={{ isLoggedIn, nickName }}>
       <AccountFunctionContext.Provider value={accountFunction}>
         <div className="App gradient__bg">
-          {/* <div className="gradient__bg"> */}
           <NavigationBar />
           <Container>
             <Routes>
@@ -72,7 +69,6 @@ const App = () => {
             </Routes>
           </Container>
         </div>
-        {/* </div> */}
       </AccountFunctionContext.Provider>
     </AccountStateContext.Provider>
   );

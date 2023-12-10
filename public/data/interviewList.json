@@ -1,10 +1,10 @@
 {
   "status": 200,
   "data": [
-    { "interviewId": 1, "interviewTitle": "인터뷰 제목 1" },
-    { "interviewId": 3, "interviewTitle": "인터뷰 제목 2" },
-    { "interviewId": 4, "interviewTitle": "인터뷰 제목 3" },
-    { "interviewId": 5, "interviewTitle": "인터뷰 제목 4" },
-    { "interviewId": 10, "interviewTitle": "인터뷰 제목 5" }
+    { "interviewId": 1, "title": "인터뷰 제목 1" },
+    { "interviewId": 3, "title": "인터뷰 제목 2" },
+    { "interviewId": 4, "title": "인터뷰 제목 3" },
+    { "interviewId": 5, "title": "인터뷰 제목 4" },
+    { "interviewId": 10, "title": "인터뷰 제목 5" }
   ]
 }

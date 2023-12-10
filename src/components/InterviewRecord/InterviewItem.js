@@ -2,14 +2,14 @@ import React from "react";
 import { Button, Card, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-const InterviewItem = ({ interviewId, interviewTitle }) => {
+const InterviewItem = ({ interviewId, title }) => {
   const navigate = useNavigate();
 
   return (
     <Col key={interviewId}>
       <Card style={{ width: "16rem", height: "8rem" }}>
         <Card.Body className="text-center">
-          <Card.Text>{interviewTitle}</Card.Text>
+          <Card.Text>{title}</Card.Text>
 
           <Button
             variant="outline-primary"

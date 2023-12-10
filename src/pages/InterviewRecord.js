@@ -8,7 +8,7 @@ const InterviewRecord = () => {
   // 인터뷰 제목, 인터뷰 아이디
   const getInterviewData = async () => {
     const resData = await axiosInstance
-      .get("/data/interviewList.json")
+      .get(`/api/interview/list`)
       .then((res) => {
         return res.status === 200 ? res.data : null;
       })
@@ -21,19 +21,19 @@ const InterviewRecord = () => {
       const initData = resData.map((it) => {
         return {
           interviewId: it.interviewId,
-          interviewTitle: it.interviewTitle,
+          title: it.title,
         };
       });
       setData(initData);
     } catch (error) {
       // 임시 코드 시작
-      setData([
-        { interviewId: 1, interviewTitle: "인터뷰 제목 1" },
-        { interviewId: 3, interviewTitle: "인터뷰 제목 2" },
-        { interviewId: 4, interviewTitle: "인터뷰 제목 3" },
-        { interviewId: 5, interviewTitle: "인터뷰 제목 4" },
-        { interviewId: 10, interviewTitle: "인터뷰 제목 5" },
-      ]);
+      // setData([
+      //   { interviewId: 1, title: "인터뷰 제목 1" },
+      //   { interviewId: 3, title: "인터뷰 제목 2" },
+      //   { interviewId: 4, title: "인터뷰 제목 3" },
+      //   { interviewId: 5, title: "인터뷰 제목 4" },
+      //   { interviewId: 10, title: "인터뷰 제목 5" },
+      // ]);
       // 임시 코드 끝
       return;
     }
