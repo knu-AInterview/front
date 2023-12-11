@@ -52,10 +52,7 @@ const SignUp = ({ SignUpOnRequestClose }) => {
         }
       );
       console.log("Server Response:", response.data);
-      // toggleModal();
 
-      // TODO :: Navigate to Page 2
-      // navigate("/interview", { state: { resumeData: response.data } });
       navigate("/");
     } catch (error) {
       console.error("Error sending data:", error);
@@ -81,10 +78,7 @@ const SignUp = ({ SignUpOnRequestClose }) => {
       );
       console.log("Server Response:", response.data);
       navigate("/");
-      // toggleModal();
-
-      // TODO :: Navigate to Page 2
-      // navigate("/interview", { state: { resumeData: response.data } });
+      alert("회원 가입 완료!");
     } catch (error) {
       console.error("Error sending data:", error);
     }

@@ -112,8 +112,10 @@ const Resume = () => {
           alert("삭제하였습니다.");
           navigate("/resume/list");
         })
-        .catch(() => {
-          alert("삭제 실패");
+        .catch((err) => {
+          err.response.status === 500
+            ? alert("인터뷰에 제출된 이력서입니다.")
+            : alert("삭제 실패");
         });
     }
   };

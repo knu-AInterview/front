@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import { Button, Card, Col } from "react-bootstrap";
 import { createSearchParams, useNavigate } from "react-router-dom";
 import axiosInstance from "../../pages/Interview/axiosInstance";
-import { ResumeFunctionContext } from "../../pages/Mypage";
 
 const ResumeItem = ({ resumeId, title }) => {
   const navigate = useNavigate();
@@ -27,8 +26,10 @@ const ResumeItem = ({ resumeId, title }) => {
           alert("삭제하였습니다.");
           window.location.reload();
         })
-        .catch(() => {
-          alert("삭제 실패");
+        .catch((err) => {
+          err.response.status === 500
+            ? alert("인터뷰에 제출된 이력서입니다.")
+            : alert("삭제 실패");
         });
     }
   };
