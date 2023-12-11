@@ -2,7 +2,7 @@
 // import "./App.css";
 import { Route, Routes } from "react-router-dom";
 
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import SignUp from "./pages/Auth/SignUp";
 import NavigationBar from "./components/NavigationBar";
@@ -30,18 +30,34 @@ const App = () => {
   // 로그인 시
   const onLoggedIn = useCallback((nickName) => {
     setIsLoggedIn(true);
-    setNickName(nickName);
+    localStorage.setItem(
+      "account",
+      JSON.stringify({ isLoggedIn: true, nickName: nickName })
+    );
   }, []);
 
   // 로그아웃 시
   const onLoggedOut = useCallback(() => {
     setIsLoggedIn(false);
-    setNickName("");
+    localStorage.setItem(
+      "account",
+      JSON.stringify({ isLoggedIn: false, nickName: "" })
+    );
   }, []);
 
   const accountFunction = useMemo(() => {
     return { onLoggedIn, onLoggedOut };
-  });
+  }, []);
+
+  useEffect(() => {
+    try {
+      const account = JSON.parse(localStorage.getItem("account"));
+      setIsLoggedIn(account.isLoggedIn);
+      setNickName(account.nickName);
+    } catch (error) {
+      return;
+    }
+  }, [isLoggedIn, nickName]);
 
   return (
     <AccountStateContext.Provider value={{ isLoggedIn, nickName }}>

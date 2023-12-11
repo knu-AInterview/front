@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ResumeItem from "./ResumeItem";
 import { Row } from "react-bootstrap";
 

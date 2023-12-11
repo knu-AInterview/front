@@ -27,7 +27,7 @@ const QnAList = () => {
   // 인터뷰 데이터 가져오기
   const getInterviewData = async () => {
     const resData = await axiosInstance
-      .get(`/api/${interviewId}`)
+      .get(`http://localhost:8080/api/member/interview/${interviewId}`)
       .then((res) => {
         return res.status === 200 ? res.data : null;
       })
@@ -36,8 +36,10 @@ const QnAList = () => {
         return null;
       });
 
+    console.log(resData);
+
     try {
-      setResume(resData.resume);
+      setResume(resData.resumeDto);
       const initQnaList = resData.qnaList.map((it) => {
         return {
           question: it.question,

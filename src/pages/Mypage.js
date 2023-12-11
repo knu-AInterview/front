@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 // import { useParams } from "react-router-dom";
 import ResumeList from "../components/Resume/ResumeList";
 import axiosInstance from "./Interview/axiosInstance";
@@ -7,6 +7,7 @@ const Mypage = () => {
   // const { userId } = useParams(); // 유저 아이디 번호
   const [resumeList, setresumeList] = useState([]); // 이력서 목록 데이타
 
+  // 서버로부터 이력서 목록 가져오기
   const getResumeListData = async () => {
     const res = await axiosInstance
       .get("http://localhost:8080/api/member/resume/list")
@@ -34,6 +35,7 @@ const Mypage = () => {
     }
   };
 
+  // useeffect;
   useEffect(() => {
     getResumeListData();
   }, []);

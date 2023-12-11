@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import ResumeAddableInput from "../components/Resume/ResumeAddableInput";
 import axiosInstance from "./Auth/axiosInstance";
 
 const Resume = () => {
-  // const navigate = useNavigate();
   // mode에 따라 작성, 읽기, 수정
   const [searchParams, setSearchParams] = useSearchParams();
   const mode = searchParams.get("mode");
-  // const userId = searchParams.get("userId");
   const resumeId = searchParams.get("resumeId");
+
+  const navigate = useNavigate();
 
   // 추가 및 수정이 없는 항목: 제목, 사용 언어, 자기소개
   const [notAddableItem, setNotAddableItem] = useState({
@@ -84,7 +84,12 @@ const Resume = () => {
     };
 
     axiosInstance({
-      url: "http://localhost:8080/api/resume",
+      url:
+        mode === "write"
+          ? "http://localhost:8080/api/resume"
+          : mode === "edit"
+          ? `http://localhost:8080/api/member/resume/${resumeId}`
+          : null,
       method: mode === "write" ? "POST" : mode === "edit" ? "PUT" : null,
       withCredentials: true,
       data: resumeData,
@@ -96,28 +101,42 @@ const Resume = () => {
         alert("저장 실패");
       }
     });
+  };
 
-    // fetch("/api/resume", {
-    //   method: "POST", // 작성 -> write ,수정 -> put
-    //   body: JSON.stringify(resumeData),
-    // }).then((res) => {
-    //   if (res.status === 200) {
-    //     alert("저장 완료");
-    //     setSearchParams({ mode: "view" });
-    //     // navigate("/");
-    //   } else {
-    //     alert("저장 실패");
-    //     setSearchParams({ mode: "view" });
-    //   }
-    // });
+  // 삭제 버튼
+  const onClickDelete = () => {
+    if (window.confirm(`삭제하시겠습니까?`) === true) {
+      axiosInstance
+        .delete(`http://localhost:8080/api/member/resume/${resumeId}`)
+        .then((res) => {
+          alert("삭제하였습니다.");
+          navigate("/resume/list");
+        })
+        .catch(() => {
+          alert("삭제 실패");
+        });
+    }
   };
 
   useEffect(() => {
-    // (mode === "view" || mode === "edit") && getResumeData();
     if (mode === "view" || mode === "edit") {
       getResumeData();
     }
   }, []);
+
+  useEffect(() => {
+    if (mode === "write") {
+      setNotAddableItem({
+        title: "",
+        introduction: "",
+        language: "",
+      });
+      setCareer([""]);
+      setAward([""]);
+      setInitCareer([]);
+      setInitAward([]);
+    }
+  }, [mode]);
 
   return (
     <>
@@ -147,6 +166,7 @@ const Resume = () => {
             placeholder={"예시) A회사에서 n년 동안 xxx 서비스 개발"}
             getState={getCareer}
             initState={initCareer}
+            mode={mode}
           />
           {/* 수상 이력 */}
           <ResumeAddableInput
@@ -154,6 +174,7 @@ const Resume = () => {
             placeholder={"예시) B 경진대회 x 상"}
             getState={getAward}
             initState={initAward}
+            mode={mode}
           />
 
           {/* 사용 언어 */}
@@ -188,14 +209,46 @@ const Resume = () => {
           </Form.Group>
         </fieldset>
         {/* 저장 또는 수정 */}
-        <Form.Group as={Row} className="mb-3">
+        <Form.Group as={Row} className="p-3">
           <Col sm={{ span: 10, offset: 2 }}>
-            {mode === "write" || mode === "edit" ? (
-              <Button onClick={handleSubmit}>저장</Button>
+            {mode === "write" ? (
+              <>
+                <Button onClick={handleSubmit}>저장</Button>
+              </>
+            ) : mode === "edit" ? (
+              <>
+                <Button variant="primary" onClick={handleSubmit}>
+                  저장
+                </Button>{" "}
+                <Button variant="danger" onClick={onClickDelete}>
+                  삭제
+                </Button>{" "}
+                <Button
+                  variant="secondary"
+                  onClick={() => navigate("/resume/list")}
+                >
+                  목록으로
+                </Button>
+              </>
             ) : mode === "view" ? (
-              <Button variant="secondary" onClick={onClickEdit}>
-                수정
-              </Button>
+              <>
+                <Button
+                  variant="secondary"
+                  onClick={() => navigate("/resume/list")}
+                >
+                  목록으로
+                </Button>{" "}
+                {resumeId !== null && (
+                  <>
+                    <Button variant="primary" onClick={onClickEdit}>
+                      수정
+                    </Button>{" "}
+                    <Button variant="danger" onClick={onClickDelete}>
+                      삭제
+                    </Button>
+                  </>
+                )}
+              </>
             ) : (
               <></>
             )}

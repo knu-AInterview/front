@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 // import "./SignUp.css";
 import axios from "axios";
 import axiosInstance from "./axiosInstance";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = ({ SignUpOnRequestClose }) => {
   const [email, setEmail] = useState("");
@@ -12,6 +13,8 @@ const SignUp = ({ SignUpOnRequestClose }) => {
   const [username, setUsername] = useState("");
 
   const [validated, setValidated] = useState(false);
+
+  const navigate = useNavigate();
 
   // 이메일 중복 확인
   const isUniqueEamil = (email) => {};
@@ -53,6 +56,7 @@ const SignUp = ({ SignUpOnRequestClose }) => {
 
       // TODO :: Navigate to Page 2
       // navigate("/interview", { state: { resumeData: response.data } });
+      navigate("/");
     } catch (error) {
       console.error("Error sending data:", error);
     }
@@ -76,6 +80,7 @@ const SignUp = ({ SignUpOnRequestClose }) => {
         }
       );
       console.log("Server Response:", response.data);
+      navigate("/");
       // toggleModal();
 
       // TODO :: Navigate to Page 2

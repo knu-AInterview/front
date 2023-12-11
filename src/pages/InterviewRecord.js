@@ -8,12 +8,12 @@ const InterviewRecord = () => {
   // 인터뷰 제목, 인터뷰 아이디
   const getInterviewData = async () => {
     const resData = await axiosInstance
-      .get(`/api/interview/list`)
+      .get("http://localhost:8080/api/member/interview/list")
       .then((res) => {
         return res.status === 200 ? res.data : null;
       })
       .catch((err) => {
-        alert("이력서 목록을 가져오지 못하였습니다.");
+        alert("인터뷰 목록을 가져오지 못하였습니다.");
         return null;
       });
 

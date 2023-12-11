@@ -1,7 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Button, ButtonGroup, Col, Form, Row } from "react-bootstrap";
 
-const ResumeAddableInput = ({ title, placeholder, getState, initState }) => {
+const ResumeAddableInput = ({
+  title,
+  placeholder,
+  getState,
+  initState,
+  mode,
+}) => {
   const [state, setState] = useState([""]);
 
   const addState = useCallback(() => {
@@ -22,7 +28,11 @@ const ResumeAddableInput = ({ title, placeholder, getState, initState }) => {
   );
 
   useEffect(() => {
-    initState.length !== 0 && setState(initState);
+    if (mode !== "write") {
+      initState.length !== 0 && setState(initState);
+    } else {
+      setState([""]);
+    }
   }, [initState]);
 
   useEffect(() => {
