@@ -46,7 +46,11 @@ const Resume = () => {
       }
     )
       .then((res) => {
-        return res.data;
+        if (res.status === 200) {
+          return res.data;
+        } else {
+          alert("이력서 가져오기 실패");
+        }
       })
       .catch((err) => {
         // return dummyResumeData;

@@ -51,6 +51,8 @@ const SignIn = ({ setIsLogin, setUser, SignInOnRequestClose }) => {
             onLoggedIn("test");
           }
           navigate("/");
+        } else {
+          alert("로그인 실패");
         }
       })
       .catch((error) => {

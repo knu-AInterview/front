@@ -76,11 +76,17 @@ const SignUp = ({ SignUpOnRequestClose }) => {
           },
         }
       );
-      console.log("Server Response:", response.data);
-      navigate("/");
-      alert("회원 가입 완료!");
+      // console.log("response status: ", response.status);
+      // console.log("Server Response:", response.data);
+      if (response.status === 200) {
+        navigate("/");
+        alert("회원 가입 완료!");
+      } else {
+        alert("회원 가입 실패");
+      }
     } catch (error) {
-      console.error("Error sending data:", error);
+      // console.error("Error sending data:", error);
+      alert("회원 가입 실패");
     }
   };
 

@@ -36,8 +36,6 @@ const QnAList = () => {
         return null;
       });
 
-    console.log(resData);
-
     try {
       setResume(resData.resumeDto);
       const initQnaList = resData.qnaList.map((it) => {

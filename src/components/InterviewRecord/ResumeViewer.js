@@ -13,8 +13,8 @@ const ResumeViewer = ({ title, career, award, language, introduction }) => {
             <b>경력</b>
           </Card.Title>
           <hr />
-          {career.map((it) => (
-            <Card.Text id={it.idx}>{it}</Card.Text>
+          {career.map((it, index) => (
+            <Card.Text key={index}>{it}</Card.Text>
           ))}
           <br />
           {/* 수상 이력 */}
@@ -22,8 +22,8 @@ const ResumeViewer = ({ title, career, award, language, introduction }) => {
             <b>수상 이력</b>
           </Card.Title>
           <hr />
-          {award.map((it) => (
-            <Card.Text id={it.idx}>{it}</Card.Text>
+          {award.map((it, index) => (
+            <Card.Text key={index}>{it}</Card.Text>
           ))}
           <br />
           {/* 사용 언어 */}
@@ -38,9 +38,7 @@ const ResumeViewer = ({ title, career, award, language, introduction }) => {
             <b>자기 소개</b>
           </Card.Title>
           <hr />
-          <Card.Text>
-            <p>{introduction}</p>
-          </Card.Text>
+          <Card.Text>{introduction}</Card.Text>
         </Card.Body>
       </Card>
     </>
